@@ -5,8 +5,16 @@
   "repository": "https://github.com/lucaspaulodev/MultiDB.git",
   "author": "Lucas Paulo <lucaspaulodev@gmail.com>",
   "license": "MIT",
-
   "scripts": {
-    "dev": "node src/index.js"
+    "dev": "node src/index.js",
+    "test": "mocha src/tests/*.test.js"
+  },
+  "dependencies": {
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1"
   }
 }
