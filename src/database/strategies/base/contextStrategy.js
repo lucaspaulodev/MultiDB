@@ -2,6 +2,7 @@ const ICrud = require('./../interfaces/ICrud')
 
 class ContextStrategy extends ICrud {
     constructor(strategy){
+        super()
         this._database = strategy
     }
 
