@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/lucaspaulodev/MultiDB.git",
   "author": "Lucas Paulo <lucaspaulodev@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+
+  "scripts": {
+    "dev": "node src/index.js"
+  }
 }
