@@ -58,6 +58,10 @@ class Postgres extends ICrud {
         return this._heroes.findAll({where: item, raw: true})
     }
 
+    async update(id, item){
+        return this._heroes.update(item, {where: {id:id}})
+    }
+
     async connect(){
         this._driver = new Sequelize(
             'heroes',
