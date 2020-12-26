@@ -8,15 +8,24 @@ const MOCK_HERO_CREATE = {
     nome: 'Flash',
     poder: 'Velocidade'
 }
+
 const MOCK_HERO_DEFAULT = {
     nome: `Spider Man-${Date.now()}`,
     poder: 'super net'
 }
+const MOCK_HERO_UPDATE = {
+    nome: `Patolino-${Date.now()}`,
+    poder: 'Speed'
+}
+
+let MOCK_HERO_ID = ''
 
 describe('MongoDB Strategy', () => {
     before(async () => {
         await context.connect()
         await context.create(MOCK_HERO_DEFAULT)
+        const result = await context.create(MOCK_HERO_UPDATE)
+        MOCK_HERO_ID = result._id
     })
 
     it('Verify connection', async () => {
@@ -41,5 +50,19 @@ describe('MongoDB Strategy', () => {
         }
 
         assert.deepStrictEqual(result,  MOCK_HERO_DEFAULT)
+    })
+
+    it('Update hero', async () => {
+        const result = await context.update(MOCK_HERO_ID, {
+            nome: 'Perna Longa'
+        })
+
+        assert.deepStrictEqual(result.nModified, 1)
+    })
+
+    it('Delete Hero', async () => {
+        const result = await context.delete(MOCK_HERO_ID)
+
+        assert.deepStrictEqual(result.n, 1)
     })
 })
