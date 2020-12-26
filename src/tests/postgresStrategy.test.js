@@ -23,4 +23,10 @@ describe('Postgres Strategy', () => {
         delete result.id
         assert.deepStrictEqual(result, MOCK_HERO_CREATE)
     })
+
+    it('Read Heroes', async () => {
+        const [result] = await context.read({nome: MOCK_HERO_CREATE.nome});
+        delete result.id
+        assert.deepStrictEqual(result, MOCK_HERO_CREATE)
+    })
 })
