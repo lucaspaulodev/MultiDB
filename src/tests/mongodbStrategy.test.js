@@ -8,6 +8,7 @@ describe('MongoDB Strategy', function () {
     this.beforeEach(async () => {
         await context.connect()
     })
+    
     it('Verify connection', async () => {
         const result = await context.isConnected()
 
