@@ -1,28 +1,29 @@
 const Hapi = require('hapi')
-const Context  = require('./database/strategies/base/contextStrategy')
+const Context = require('./database/strategies/base/contextStrategy')
 const MongoDb = require('./database/strategies/mongodb/mongoDB')
 const heroSchema = require('./database/strategies/mongodb/schemas/heroSchema')
+const HeroRoute = require('./routes/heroRoutes')
 
 const app = Hapi.Server({
-    port: 5000
+	port: 5000
 })
 
-async function main () {
-    const connection = MongoDb.connect()
-    const context = new Context(new MongoDb(connection, heroSchema))
+function mapRoutes(instance, methods) {
+  return methods.map(method => instance[method]())
+}
 
-    app.route([{
-        path: '/heroes',
-        method: 'GET',
-        handler: (request, head) => {
-            return context.read()
-        }
-    }])
+async function main() {
+	const connection = MongoDb.connect()
+	const context = new Context(new MongoDb(connection, heroSchema))
 
-    await app.start()
-    console.log('Server up in port', app.info.port)
+	app.route([
+    ...mapRoutes(new HeroRoute(context), HeroRoute.methods())
+  ])
 
-    return app
+	await app.start()
+	console.log('Server up in port', app.info.port)
+
+	return app
 }
 
 module.exports = main()
