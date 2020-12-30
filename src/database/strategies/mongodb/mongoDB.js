@@ -26,14 +26,14 @@ class MongoDB extends ICrud {
     }
 
     static connect(){
-        Mongoose.connect('mongodb://lucaspaulodev:senha@localhost:27017/heroes', {useNewUrlParser: true}, (err) => {
+        Mongoose.connect('mongodb://lucaspaulodev:senha@localhost:27017/heroes', {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
             if(!err) return;
             console.log('Fail to connect', err)
         })
         const connection = Mongoose.connection
 
         connection.once('open', () => {
-            console.log('Databse is running...')
+            console.log('Database is running...')
         })
 
         return connection
