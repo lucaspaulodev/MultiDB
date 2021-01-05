@@ -3,6 +3,11 @@ const api = require('../api')
 
 let app = {}
 
+const MOCK_HERO_SIGNUP = {
+    nome: 'Chapolin Colorado',
+    poder: 'Marreta bionica'
+}
+
 describe('Test API heroes', () => {
     before(async () => {
         app = await api
@@ -69,5 +74,21 @@ describe('Test API heroes', () => {
 
         assert.deepStrictEqual(statusCode, 200)
         assert.deepStrictEqual(data[0].nome, NAME)
-    })  
+    })
+    
+    it('Sign Up /heroes', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: `/heroes`,
+            payload: MOCK_HERO_SIGNUP
+        })
+
+        const statusCode = result.statusCode
+
+        const {message, _id} = JSON.parse(result.payload)
+
+        assert.ok(statusCode === 200)
+        assert.notStrictEqual(_id, undefined)
+        assert.deepStrictEqual(message, "Hero registred with success")
+    })
 })
