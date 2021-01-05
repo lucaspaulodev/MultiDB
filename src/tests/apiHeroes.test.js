@@ -42,7 +42,18 @@ describe('Test API heroes', () => {
             url: `/heroes?skip=0&limit=${LIMIT_SIZE}`
         })
 
-        assert.deepStrictEqual(result.payload, 'Server Error')
+        const errorResult = {
+            "statusCode":400,
+            "error":"Bad Request",
+            "message":"child \"limit\" fails because [\"limit\" must be a number]",
+            "validation":{
+                "source":"query",
+                "keys":["limit"]
+            }
+        }
+
+        assert.deepStrictEqual(result.statusCode, 400)
+        assert.deepStrictEqual(result.payload, JSON.stringify(errorResult))
     })
 
     it('List /heroes must filter an item', async () => {

@@ -1,4 +1,5 @@
 const BaseRoute = require('./base/baseRoute')
+const Joi = require('joi')
 
 class HeroRoutes extends BaseRoute {
 	constructor(database) {
@@ -10,6 +11,18 @@ class HeroRoutes extends BaseRoute {
 		return {
 			path: '/heroes',
 			method: 'GET',
+			config: {
+				validate: {
+					failAction: (request, headers, erro) => {
+						throw erro;
+					},
+					query: {
+						skip: Joi.number().integer().default(0),
+						limit: Joi.number().integer().default(3),
+						nome: Joi.string().min(3).max(100)
+					}
+				}
+			},
 			handler: (request, headers) => {
 				try {
 					const {
@@ -18,24 +31,15 @@ class HeroRoutes extends BaseRoute {
 						nome
 					} = request.query
 
-					let query = {}
-
-					if(nome){
-						query.nome = nome
+					const query = {
+						nome: {
+							$regex: `.*${nome}*.`
+						}
 					}
-
-					if(isNaN(skip)){
-						throw Error('The typeof skip is incorrect')
-					}
-
-					if(isNaN(limit)){
-						throw Error('The typeof limit is incorrect')
-					}
-
 					return this.database.read(
-						query,
-						parseInt(skip),
-						parseInt(limit)
+						nome ? query : {},
+						skip,
+						limit
 					)
 				}
 				catch (error) {

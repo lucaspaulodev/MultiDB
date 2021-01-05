@@ -6,11 +6,12 @@
   "author": "Lucas Paulo <lucaspaulodev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "node src/index.js",
+    "dev": "node src/api.js",
     "test": "mocha src/tests/*.test.js"
   },
   "dependencies": {
-    "hapi": "^18.1.0",
+    "hapi": "17.7.0",
+    "joi": "^14.1.0",
     "mongoose": "^5.11.8",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
