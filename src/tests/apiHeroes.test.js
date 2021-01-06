@@ -81,7 +81,7 @@ describe('Test API heroes', () => {
     })
 
     it('List /heroes must filter an item', async () => {
-        const NAME = 'Flash'
+        const NAME = MOCK_INITIAL_HERO.nome
 
         const result = await app.inject({
             method: 'GET',
