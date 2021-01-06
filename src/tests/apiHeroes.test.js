@@ -134,14 +134,13 @@ describe('Test API heroes', () => {
 
     it('Dont be able update with invalid ID patch /heroes/:id', async () => {
         const _id = `5ff60518d88081318f4af475`
-        const expected = {
-            poder: 'Super Mira'
-        }
 
         const result = await app.inject({
             method: 'PATCH',
             url: `/heroes/${_id}`,
-            payload: JSON.stringify(expected)
+            payload: JSON.stringify({
+                poder: 'Super Mira'
+            })
         })
 
         const statusCode = result.statusCode
@@ -149,7 +148,67 @@ describe('Test API heroes', () => {
 
         const data = JSON.parse(result.payload)
 
+        const expected = {
+            statusCode: 412,
+            error: 'Precondition Failed',
+            message: 'Dont was find in database'
+        }
+
+        assert.ok(statusCode === 412)
+        assert.deepStrictEqual(data, expected)
+    })
+
+    it('Remove with DELETE /heroes/:id', async () => {
+        const _id = MOCK_ID
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/heroes/${_id}`
+        })
+
+        const statusCode = result.statusCode
+        const data = JSON.parse(result.payload)
+
         assert.ok(statusCode === 200)
-        assert.deepStrictEqual(data.message, 'Dont was possible update the item')
+        assert.deepStrictEqual(data.message, 'Hero removed with success')
+    })
+
+    it('Dont be able to remove with DELETE /heroes/:id', async () => {
+        const _id = `5ff60518d88081318f4af475`
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/heroes/${_id}`
+        })
+
+        const statusCode = result.statusCode
+        const data = JSON.parse(result.payload)
+
+        const expected = {
+            statusCode: 412,
+            error: 'Precondition Failed',
+            message: 'Dont was find in database'
+        }
+
+        assert.ok(statusCode === 412)
+        assert.deepStrictEqual(data, expected)
+    })
+
+    it('Dont be able to remove with invalid ID - DELETE /heroes/:id', async () => {
+        const _id = `INVALID_ID`
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/heroes/${_id}`
+        })
+
+        const statusCode = result.statusCode
+        const data = JSON.parse(result.payload)
+
+        const expected = {
+            statusCode: 500,
+            error: 'Internal Server Error',
+            message: 'An internal server error occurred'
+        }
+
+        assert.ok(statusCode === 500)
+        assert.deepStrictEqual(data, expected)
     })
 })
