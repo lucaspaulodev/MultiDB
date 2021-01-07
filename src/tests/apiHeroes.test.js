@@ -3,6 +3,10 @@ const api = require('../api')
 
 let app = {}
 
+let MOCK_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inh1eGFkYXNpbHZhIiwiaWF0IjoxNTQyNzI4MzQ0fQ.JvBOZa7yXds4ktQ7HvNRYO6-s1mbU7AKTJP9G2ghje4"
+const headers = {
+    Authorization: MOCK_TOKEN
+}
 const MOCK_HERO_SIGNUP = {
     nome: 'Chapolin Colorado',
     poder: 'Marreta bionica'
@@ -22,6 +26,7 @@ describe('Test API heroes', () => {
         const result = await app.inject({
             method: 'POST',
             url: `/heroes`,
+            headers,
             payload: JSON.stringify(MOCK_INITIAL_HERO)
         })
 
@@ -35,6 +40,7 @@ describe('Test API heroes', () => {
     it('List /heroes', async () => {
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: '/heroes?skip=0&limit=10'
         })
         const data = JSON.parse(result.payload)
@@ -48,6 +54,7 @@ describe('Test API heroes', () => {
         const LIMIT_SIZE = 3
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/heroes?skip=0&limit=${LIMIT_SIZE}`
         })
 
@@ -63,6 +70,7 @@ describe('Test API heroes', () => {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/heroes?skip=0&limit=${LIMIT_SIZE}`
         })
 
@@ -85,6 +93,7 @@ describe('Test API heroes', () => {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/heroes?skip=0&limit=3&nome=${NAME}`
         })
 
@@ -99,6 +108,7 @@ describe('Test API heroes', () => {
         const result = await app.inject({
             method: 'POST',
             url: `/heroes`,
+            headers,
             payload: MOCK_HERO_SIGNUP
         })
 
@@ -120,6 +130,7 @@ describe('Test API heroes', () => {
 
         const result = await app.inject({
             method: 'PATCH',
+            headers,
             url: `/heroes/${_id}`,
             payload: JSON.stringify(expected)
         })
@@ -137,6 +148,7 @@ describe('Test API heroes', () => {
 
         const result = await app.inject({
             method: 'PATCH',
+            headers,
             url: `/heroes/${_id}`,
             payload: JSON.stringify({
                 poder: 'Super Mira'
@@ -162,6 +174,7 @@ describe('Test API heroes', () => {
         const _id = MOCK_ID
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/heroes/${_id}`
         })
 
@@ -176,6 +189,7 @@ describe('Test API heroes', () => {
         const _id = `5ff60518d88081318f4af475`
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/heroes/${_id}`
         })
 
@@ -196,6 +210,7 @@ describe('Test API heroes', () => {
         const _id = `INVALID_ID`
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/heroes/${_id}`
         })
 

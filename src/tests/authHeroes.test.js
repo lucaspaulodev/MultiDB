@@ -1,29 +1,39 @@
 const assert = require('assert')
 const api = require('../api')
-
 let app = {}
 
-describe.only('Auth test suite', async () => {
-    before(async () => {
+
+describe('Auth test suite', function () {
+    this.beforeAll(async () => {
         app = await api
     })
-
-    it('Must obtain a token', async () => {
+    it('deve obter um token', async () => {
         const result = await app.inject({
             method: 'POST',
             url: '/login',
             payload: {
-                username: 'Lpzinnn',
+                username: 'Xuxadasilva',
                 password: '123'
             }
-        })
-
+        });
         const statusCode = result.statusCode
-        const data = JSON.parse(result.payload)
 
-        console.log(data)
-        
         assert.deepStrictEqual(statusCode, 200)
-        assert.ok(data.token.length > 10)
+        assert.ok(JSON.parse(result.payload).token.length > 10)
+    })
+
+    it('deve retornar não autorizado ao tentar obter um token com login errado', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/login',
+            payload: {
+                username: 'lucaspaulo',
+                password: '123'
+            }
+        });
+        const statusCode = result.statusCode
+
+        assert.deepStrictEqual(statusCode, 401)
+        assert.deepStrictEqual(JSON.parse(result.payload).error, "Unauthorized")
     })
 })

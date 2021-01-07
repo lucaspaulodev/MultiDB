@@ -3,7 +3,7 @@ const Joi = require('joi')
 const Boom = require('boom')
 
 const USER = {
-    username: 'Lpzinnn',
+    username: 'xuxadasilva',
     password: '123'
 }
 const Jwt = require('jsonwebtoken')
@@ -40,7 +40,7 @@ class AuthRoutes extends BaseRoute {
                     password !== USER.password
                 )
                     return Boom.unauthorized()
-                    
+
                 return {
                     token: Jwt.sign({
                         username: username
